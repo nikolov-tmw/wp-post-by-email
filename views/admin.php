@@ -7,8 +7,8 @@
  * @package   PostByEmail
  * @author    Kat Hagan <kat@codebykat.com>
  * @license   GPL-2.0+
- * @link      http://codebykat.wordpress.com
- * @copyright 2013 Kat Hagan
+ * @link      https://github.com/codebykat/wp-post-by-email/
+ * @copyright 2013-2015 Kat Hagan / Automattic
  */
 ?>
 <div class="wrap">
@@ -104,6 +104,19 @@
 															'hierarchical' => true
 														) );
 						?>
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row">
+						<label for="post_by_email_options[send_response]">
+							<?php _e( 'Send response?', 'post-by-email' ); ?>
+						</label>
+					</th>
+					<td>
+						<input type="checkbox" name="post_by_email_options[send_response]" id="post_by_email_options[send_response]" <?php checked( $options['send_response'] ); ?> />
+						<p class="description">
+							<?php _e( 'Check this box if you want to receive acknowledgements and errors via email reply.', 'post-by-email'); ?>
+						</p>
 					</td>
 				</tr>
 			</table>
@@ -262,8 +275,8 @@
 				$date_format = get_option( 'date_format' );
 				$time_format = get_option( 'time_format' );
 			?>
-			<?php if ( isset( $options['last_checked'] ) ) : ?>
-				<?php echo date_i18n( "$date_format, $time_format", $options['last_checked'] ); ?>
+			<?php if ( isset( $options['last_checked'] ) && 0 < $options['last_checked'] ) : ?>
+				<?php echo get_date_from_gmt( date( 'Y-m-d H:i:s', $options['last_checked'] ), "$date_format, $time_format" ); ?>
 			<?php else: ?>
 				<?php _e( 'Never', 'post-by-email' ); ?>
 			<?php endif; ?>

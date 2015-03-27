@@ -151,6 +151,8 @@ class Post_By_Email_Admin {
 			);
 		}
 
+		$options['send_response'] = isset( $input['send_response'] ) && '' != $input['send_response'];
+
 		$options['ssl'] = isset( $input['ssl'] ) && '' != $input['ssl'];
 		$options['delete_messages'] = isset( $input['delete_messages'] ) && '' != $input['delete_messages'];
 
@@ -186,9 +188,12 @@ class Post_By_Email_Admin {
 
 		// this is ridiculous
 		if ( isset ( $input['status'] ) && in_array( $input['status'], array( 'unconfigured', 'error', '') ) ) {
-			// maintain saved state
 			$options['status'] = $input['status'];
 		}
+		if ( isset ( $input['last_checked'] ) ) {
+			$options['last_checked'] = (int) $input['last_checked'];
+		}
+
 		elseif ( ( $options['mailserver_url'] == $default_options['mailserver_url'] )
 			|| ( '' == $options['mailserver_url'] )
 			|| ( $options['mailserver_login'] == $default_options['mailserver_login'] )
@@ -202,7 +207,7 @@ class Post_By_Email_Admin {
 		}
 		else {
 			// clear the transient and any error conditions if we have good options now
-			delete_transient( 'mailserver_last_checked' );
+			delete_transient( 'post_by_email_last_checked' );
 			$options['status'] = '';
 		}
 
